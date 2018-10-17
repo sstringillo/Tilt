@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Tilt</string>
+
+    <!-- String for start button on home screen -->
+    <string name="Start_button_name">Start</string>
+
+    <!-- String for option button on home screen -->
+    <string name="Options_button_name">Options</string>
+
+    <!-- String for version number on home screen -->
+    <string name="Version_name">v1.01</string>
+
+    <!-- String to display score on game screen -->
+    <string name="Score_counter_name">Score:</string>
+
+    <!-- String to display high score on game and end screen -->
+    <string name="High_Score_counter_name">High Score:</string>
+
+    <!-- String that displays when a new high score was reached-->
+    <string name="New_high_score_display">New High Score!</string>
+
+    <!-- String for play again button on end screen -->
+    <string name="Play_again_button">Play Again?</string>
+
+    <!-- String for how to play button on menu screen -->
+    <string name="How_to_Play">- How to Play</string>
+
+    <!-- String for delete high score button on menu screen -->
+    <string name="Delete">- Delete High Score</string>
+
+    <!-- String for version improvements button on menu screen -->
+    <string name="Version_improvement">- Version Improvements</string>
+
+    <!-- String for version improvements title on improvements alert screen -->
+    <string name="Version_improvement_nodash">Version Improvements v1.01</string>
+
+    <!-- String for version improvements summary on improvements alert screen -->
+    <string name="Improvements1.01">Added high score counter and delete option</string>
+
+    <!-- String for menu header on menu screen -->
+    <string name="Menu_title">Menu</string>
+
+    <!-- String for home button on end screen -->
+    <string name="Home_button">Home</string>
+
+    <!-- String for message summary on alert menu screen -->
+    <string name="Delete_check">Are you sure you want to delete your high score?</string>
+
+    <!-- String for delete button on delete high score menu option -->
+    <string name="simple_delete">Delete</string>
+
+    <!-- String for cancel button on delete high score menu option -->
+    <string name="simple_cancel">Cancel</string>
+
+    <!-- String for title on delete high score alert screen -->
+    <string name="Deletion_ask">Delete High Score?</string>
+
+    <!-- String for got it button on version improvements alert screen -->
+    <string name="Got_it">GOT IT</string>
+</resources>
