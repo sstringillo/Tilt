@@ -8,25 +8,26 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager mSensorManager;
-    public float[] rotationMatrix = new float[9];
-    public float[] OriValues = new float[3];
-    public float[] AccelData = new float[3];
-    public float[] MagneticData = new float[3];
-    public int count = 0;
-    public long delayMilli = 3000;
+    //Rotation matrices to check if user tilted phone enough
+    float[] rotationMatrix = new float[9];
+    float[] prevRotationMatrix = new float[9];
+    float[] AngleValues = new float[3];
+    //Array to store values from accelerometer
+    float[] AccelData = new float[3];
+    //Array to store values from magnetic field
+    float[] MagneticData = new float[3];
+    int count = 0;
+    long delayMilli = 3000;
     Handler timeHandler = new Handler();
     Runnable timer = new Runnable() {
         @Override
@@ -41,11 +42,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_game);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //Sets up game screen by registering sensors, hiding arrows and retrieving user high score if they have one
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
-        ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
-        ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
-        ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
+        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
+        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
+        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
+        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
         blueArrow.setVisibility(View.INVISIBLE);
         redArrow.setVisibility(View.INVISIBLE);
         yellowArrow.setVisibility(View.INVISIBLE);
@@ -76,6 +78,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
+        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
+        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
+        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
+        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
         switch(sensorEvent.sensor.getType()){
             case Sensor.TYPE_ACCELEROMETER:
                 System.arraycopy(sensorEvent.values, 0, AccelData, 0, 3);
@@ -88,70 +94,105 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             default:
                 break;
         }
-        SensorManager.getRotationMatrix(rotationMatrix,null,AccelData,MagneticData);
-        SensorManager.getOrientation(rotationMatrix,OriValues);
-        arrowCheck(OriValues[1],OriValues[2]);
+        //Checks if any arrow is visible, if not keep updating current rotation to be used as the control matrix (prevRotationMatrix)
+        //Once an arrow is visible sensor checks for rotation and uses that for current position (rotationMatrix) to get angle difference
+        if(blueArrow.getVisibility() == View.VISIBLE||redArrow.getVisibility() == View.VISIBLE||yellowArrow.getVisibility() == View.VISIBLE||greenArrow.getVisibility() == View.VISIBLE) {
+            SensorManager.getRotationMatrix(rotationMatrix, null, AccelData, MagneticData);
+            SensorManager.getAngleChange(AngleValues, rotationMatrix, prevRotationMatrix);
+            arrowCheck(AngleValues[1], AngleValues[2]);
+        }
+        else{
+            SensorManager.getRotationMatrix(prevRotationMatrix, null, AccelData, MagneticData);
+        }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-        //Accuracy will remain constant so this function is unnecessary
+        //Not used in this application
     }
 
-    public void start() {
+    private void start() {
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 10000);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), 10000);
         timeHandler.postDelayed(timer,delayMilli);
     }
 
-    public void stop() {
+    private void stop() {
         mSensorManager.unregisterListener(this);
         timeHandler.removeCallbacks(timer);
     }
 
-
-    public void arrowCheck(float xAxis, float yAxis){
-        ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
-        ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
-        ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
-        ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
+    //Checks if user correctly tilted the phone in the direction of the visible arrow
+    //If they did, add 1 to the score and reset the countdown timer
+    //Also decrease countdown timer to increase difficulty every point
+    //If either user tilted the wrong way or time ran out, ends the game
+    private void arrowCheck(float xAxis, float yAxis){
+        if(delayMilli==500){
+            delayMilli=1000;
+        }
+        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
+        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
+        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
+        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
         TextView ScoreCount = (TextView) findViewById(R.id.score_count_num);
-            if (xAxis > 0.35 && greenArrow.getVisibility() == View.VISIBLE) {
-                timeHandler.removeCallbacks(timer);
-                greenArrow.setVisibility(View.INVISIBLE);
-                count++;
-                delayMilli = delayMilli-25;
-                ScoreCount.setText(String.valueOf(count));
-                gameLoop();
+            if (greenArrow.getVisibility() == View.VISIBLE) {
+                if(xAxis > 0.15) {
+                    timeHandler.removeCallbacks(timer);
+                    greenArrow.setVisibility(View.INVISIBLE);
+                    count++;
+                    delayMilli = delayMilli - 25;
+                    ScoreCount.setText(String.valueOf(count));
+                    gameLoop();
+                }
+                else if(xAxis<-0.25||yAxis>0.35||yAxis<-0.35){
+                    gameBreak();
+                }
             }
-            if (xAxis < -0.35 && yellowArrow.getVisibility() == View.VISIBLE) {
-                timeHandler.removeCallbacks(timer);
-                yellowArrow.setVisibility(View.INVISIBLE);
-                count++;
-                delayMilli = delayMilli-25;
-                ScoreCount.setText(String.valueOf(count));
-                gameLoop();
+            if (yellowArrow.getVisibility() == View.VISIBLE) {
+                if(xAxis < -0.15) {
+                    timeHandler.removeCallbacks(timer);
+                    yellowArrow.setVisibility(View.INVISIBLE);
+                    count++;
+                    delayMilli = delayMilli - 25;
+                    ScoreCount.setText(String.valueOf(count));
+                    gameLoop();
+                }
+                else if(xAxis>0.25||yAxis>0.35||yAxis<-0.35){
+                    gameBreak();
+                }
             }
-            if (yAxis > 0.27 && blueArrow.getVisibility() == View.VISIBLE) {
-                timeHandler.removeCallbacks(timer);
-                blueArrow.setVisibility(View.INVISIBLE);
-                count++;
-                delayMilli = delayMilli-25;
-                ScoreCount.setText(String.valueOf(count));
-                gameLoop();
+            if (blueArrow.getVisibility() == View.VISIBLE) {
+                if(yAxis > 0.25) {
+                    timeHandler.removeCallbacks(timer);
+                    blueArrow.setVisibility(View.INVISIBLE);
+                    count++;
+                    delayMilli = delayMilli - 25;
+                    ScoreCount.setText(String.valueOf(count));
+                    gameLoop();
+                }
+                else if(xAxis>0.35||xAxis<-0.35||yAxis<-0.25){
+                    gameBreak();
+                }
             }
-            if (yAxis < -0.27 && redArrow.getVisibility() == View.VISIBLE) {
-                timeHandler.removeCallbacks(timer);
-                redArrow.setVisibility(View.INVISIBLE);
-                count++;
-                delayMilli = delayMilli-25;
-                ScoreCount.setText(String.valueOf(count));
-                gameLoop();
+            if (redArrow.getVisibility() == View.VISIBLE) {
+                if(yAxis < -0.20) {
+                    timeHandler.removeCallbacks(timer);
+                    redArrow.setVisibility(View.INVISIBLE);
+                    count++;
+                    delayMilli = delayMilli - 25;
+                    ScoreCount.setText(String.valueOf(count));
+                    gameLoop();
+                }
+                else if(xAxis>0.35||xAxis<-0.35||yAxis>0.25){
+                    gameBreak();
+                }
             }
 
     }
 
-    public void gameLoop() {
+    //Sets a random arrow to be visible on the screen and starts a countdown timer
+    //to be used by arrowCheck
+    private void gameLoop() {
         final ImageView blueArrow = (ImageView) findViewById(R.id.arrow_blue_game);
         final ImageView redArrow = (ImageView) findViewById(R.id.arrow_red_game);
         final ImageView yellowArrow = (ImageView) findViewById(R.id.arrow_yellow_game);
@@ -186,7 +227,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         },500);
     }
 
-    public void gameBreak() {
+    //Stops the sensor from retrieving data and ends the game by sending user to the end screen
+    private void gameBreak() {
+        stop();
         Intent endIntent = new Intent(GameActivity.this, EndActivity.class);
         endIntent.putExtra("Score",count);
         startActivity(endIntent);

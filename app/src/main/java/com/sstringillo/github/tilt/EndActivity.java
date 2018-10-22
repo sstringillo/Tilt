@@ -17,11 +17,14 @@ public class EndActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //Use intent extra to pass over score user got from GameActivity
         int count = getIntent().getIntExtra("Score",0);
         TextView ScoreCount = (TextView) findViewById(R.id.score_count_num);
         ScoreCount.setText(String.valueOf(count));
+        //Shared preference to keep track of users all time high score, since high score is only a single integer
         SharedPreferences pref = this.getSharedPreferences("High_score_pref",Context.MODE_PRIVATE);
         int storedHighScore = pref.getInt("Updated_high_score",0);
+        //Checks if score the user got from last game session is higher than high score, if so updates high score
         if(count>storedHighScore) {
             SharedPreferences.Editor editor = pref.edit();
             editor.putInt("Updated_high_score", count);
@@ -31,6 +34,7 @@ public class EndActivity extends AppCompatActivity {
             TextView scoreView = (TextView)findViewById(R.id.high_score_display);
             scoreView.setVisibility(View.INVISIBLE);
         }
+        //Intents for end screen buttons
         final Button PlayButton = (Button)findViewById(R.id.play_again_button);
         PlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,9 +55,7 @@ public class EndActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        /*
-        *Do nothing in this activity since we do not want unexpected actions from user
-        *Want user to only be able to play again or go to menu
-        */
+        //Do nothing in this activity since we do not want unexpected actions from user
+        //Want user to only be able to play again or go to menu
     }
 }

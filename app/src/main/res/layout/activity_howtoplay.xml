@@ -5,95 +5,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/footer_lodyas"
-    tools:context=".GameActivity">
+    tools:context=".HowToPlayActivity">
 
     <ImageView
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:src="@drawable/arrow_blue"
-        android:id="@+id/arrow_blue_game"
+        android:id="@+id/arrow_blue_howtoplay"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp" />
 
     <ImageView
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:src="@drawable/arrow_green"
-        android:id="@+id/arrow_green_game"
+        android:id="@+id/arrow_green_howtoplay"
         android:rotation="-90"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="55dp"/>
+        android:layout_marginLeft="55dp" />
 
     <ImageView
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:src="@drawable/arrow_red"
-        android:id="@+id/arrow_red_game"
+        android:id="@+id/arrow_red_howtoplay"
         android:scaleY="-1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="12dp" />
 
     <ImageView
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:src="@drawable/arrow_yellow"
-        android:id="@+id/arrow_yellow_game"
+        android:id="@+id/arrow_yellow_howtoplay"
         android:rotation="90"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="55dp"/>
+        android:layout_marginRight="55dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/high_score_name"
-        android:text="@string/High_Score_counter_name"
-        android:textSize="20dp"
+        android:id="@+id/How_to_play_instruction"
+        android:text="@string/HowToPlay_Instructions"
+        android:textSize="30dp"
+        android:textAlignment="center"
         android:fontFamily="@font/tilttextstyle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="7dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/high_score_count_num"
-        android:text="0"
-        android:textSize="20dp"
-        android:fontFamily="@font/tilttextstyle"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/high_score_name"
-        android:layout_marginLeft="7dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/score_name"
-        android:text="@string/Score_counter_name"
-        android:textSize="20dp"
-        android:fontFamily="@font/tilttextstyle"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="42dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="40dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/score_count_num"
-        android:text="0"
-        android:textSize="20dp"
+        android:id="@+id/How_to_play_instruction_complete"
+        android:text="@string/HowToPlay_InstructionsComplete"
+        android:textSize="30dp"
+        android:textAlignment="center"
         android:fontFamily="@font/tilttextstyle"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/score_name"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="30dp"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/How_to_play_instruction_cont"
+        android:text="@string/HowToPlay_InstructionsCont"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/tilttextstyle"
+        app:layout_constraintLeft_toLeftOf="@id/arrow_red_howtoplay"
+        app:layout_constraintRight_toRightOf="@id/arrow_red_howtoplay"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_red_howtoplay"
+        android:layout_marginBottom="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/How_to_play_instruction_correct"
+        android:text="@string/HowToPlay_InstructionsCorrect"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/tilttextstyle"
+        android:paddingTop="35dp" />
 
 
 </android.support.constraint.ConstraintLayout>

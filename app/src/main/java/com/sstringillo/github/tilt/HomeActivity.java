@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class HomeActivity extends AppCompatActivity {
-
     //Used to make sure the same arrow is not repeated when flashing animation is played
     int randCheck = (int) Math.floor(Math.random()*4)+1;
 
@@ -41,9 +39,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-    /*
-     * Animation to make the arrows fade away on the home screen
-     */
+
+    //Animation to make the arrows fade away on the home screen
     private void disappearAnimation(final ImageView img){
         Animation disappear = new AlphaAnimation(1,0);
         disappear.setInterpolator(new AccelerateInterpolator());
@@ -70,9 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         img.startAnimation(disappear);
     }
 
-    /*
-     * Animation to make the arrows fade back in on the home screen
-     */
+    //Animation to make the arrows fade back in on the home screen
     private void appearAnimation(final ImageView img){
         Animation appear = new AlphaAnimation(0,1);
         appear.setInterpolator(new AccelerateInterpolator());
@@ -99,9 +94,7 @@ public class HomeActivity extends AppCompatActivity {
         img.startAnimation(appear);
     }
 
-    /*
-    *Helper function to randomly choose an arrow to fade in and fade out
-     */
+    //Helper function to randomly choose an arrow to fade in and fade out
     private ImageView flashingArrows(){
         ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue);
         ImageView redArrow = (ImageView)findViewById(R.id.arrow_red);
@@ -119,5 +112,12 @@ public class HomeActivity extends AppCompatActivity {
             case 4: return greenArrow;
             default: return blueArrow;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing in this activity since we do not want user exiting back
+        //to EndActivity if they already played. User can use home button to
+        //exit app completely
     }
 }
