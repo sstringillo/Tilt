@@ -18,6 +18,10 @@ import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager mSensorManager;
+    private ImageView redArrow;
+    private ImageView yellowArrow;
+    private ImageView greenArrow;
+    private ImageView blueArrow;
     //Rotation matrices to check if user tilted phone enough
     float[] rotationMatrix = new float[9];
     float[] prevRotationMatrix = new float[9];
@@ -44,10 +48,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //Sets up game screen by registering sensors, hiding arrows and retrieving user high score if they have one
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
-        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
-        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
-        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
+        redArrow = (ImageView)findViewById(R.id.arrow_red_game);
+        yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
+        greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
+        blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
         blueArrow.setVisibility(View.INVISIBLE);
         redArrow.setVisibility(View.INVISIBLE);
         yellowArrow.setVisibility(View.INVISIBLE);
@@ -78,10 +82,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
-        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
-        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
-        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
         switch(sensorEvent.sensor.getType()){
             case Sensor.TYPE_ACCELEROMETER:
                 System.arraycopy(sensorEvent.values, 0, AccelData, 0, 3);
@@ -129,11 +129,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private void arrowCheck(float xAxis, float yAxis){
         if(delayMilli==500){
             delayMilli=1000;
+            //When time to tilt reaches half a second reset time to 1 second
+            //so when score reaches 100 game has easier and harder sections
         }
-        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_game);
-        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_game);
-        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_game);
-        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_game);
         TextView ScoreCount = (TextView) findViewById(R.id.score_count_num);
             if (greenArrow.getVisibility() == View.VISIBLE) {
                 if(xAxis > 0.15) {
@@ -193,10 +191,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     //Sets a random arrow to be visible on the screen and starts a countdown timer
     //to be used by arrowCheck
     private void gameLoop() {
-        final ImageView blueArrow = (ImageView) findViewById(R.id.arrow_blue_game);
-        final ImageView redArrow = (ImageView) findViewById(R.id.arrow_red_game);
-        final ImageView yellowArrow = (ImageView) findViewById(R.id.arrow_yellow_game);
-        final ImageView greenArrow = (ImageView) findViewById(R.id.arrow_green_game);
         final int rand = (int) Math.floor(Math.random() * 4) + 1;
         timeHandler.postDelayed(new Runnable() {
             @Override

@@ -18,6 +18,14 @@ import android.widget.TextView;
 public class HowToPlayActivity extends AppCompatActivity implements SensorEventListener {
     //Values same as GameActivity
     private SensorManager mSensorManager;
+    private ImageView blueArrow;
+    private ImageView redArrow;
+    private ImageView yellowArrow;
+    private ImageView greenArrow;
+    private TextView HowToPlayInstruction;
+    private TextView HowToPlayInstructionCont;
+    private TextView HowToPlayInstructionCorrect;
+    private TextView HowToPlayInstructionsComplete;
     float[] rotationMatrix = new float[9];
     float[] prevRotationMatrix = new float[9];
     float[] AngleValues = new float[3];
@@ -31,14 +39,14 @@ public class HowToPlayActivity extends AppCompatActivity implements SensorEventL
         setContentView(R.layout.activity_howtoplay);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_howtoplay);
-        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_howtoplay);
-        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_howtoplay);
-        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_howtoplay);
-        final TextView HowToPlayInstruction = (TextView)findViewById(R.id.How_to_play_instruction);
-        final TextView HowToPlayInstructionCont = (TextView)findViewById(R.id.How_to_play_instruction_cont);
-        final TextView HowToPlayInstructionCorrect = (TextView)findViewById(R.id.How_to_play_instruction_correct);
-        final TextView HowToPlayInstructionsComplete = (TextView)findViewById(R.id.How_to_play_instruction_complete);
+        blueArrow = (ImageView)findViewById(R.id.arrow_blue_howtoplay);
+        redArrow = (ImageView)findViewById(R.id.arrow_red_howtoplay);
+        yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_howtoplay);
+        greenArrow = (ImageView)findViewById(R.id.arrow_green_howtoplay);
+        HowToPlayInstruction = (TextView)findViewById(R.id.How_to_play_instruction);
+        HowToPlayInstructionCont = (TextView)findViewById(R.id.How_to_play_instruction_cont);
+        HowToPlayInstructionCorrect = (TextView)findViewById(R.id.How_to_play_instruction_correct);
+        HowToPlayInstructionsComplete = (TextView)findViewById(R.id.How_to_play_instruction_complete);
         blueArrow.setVisibility(View.INVISIBLE);
         redArrow.setVisibility(View.INVISIBLE);
         yellowArrow.setVisibility(View.INVISIBLE);
@@ -60,10 +68,6 @@ public class HowToPlayActivity extends AppCompatActivity implements SensorEventL
     @Override
     //Same as GameActivity
     public void onSensorChanged(SensorEvent sensorEvent) {
-        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_howtoplay);
-        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_howtoplay);
-        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_howtoplay);
-        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_howtoplay);
         switch(sensorEvent.sensor.getType()){
             case Sensor.TYPE_ACCELEROMETER:
                 System.arraycopy(sensorEvent.values, 0, AccelData, 0, 3);
@@ -93,12 +97,6 @@ public class HowToPlayActivity extends AppCompatActivity implements SensorEventL
 
     //Teachers user how to play game by showing arrows and TextViews with instructions on how to play
     private void instructionLoop(float xAxis, float yAxis){
-        final ImageView blueArrow = (ImageView)findViewById(R.id.arrow_blue_howtoplay);
-        final ImageView redArrow = (ImageView)findViewById(R.id.arrow_red_howtoplay);
-        final ImageView yellowArrow = (ImageView)findViewById(R.id.arrow_yellow_howtoplay);
-        final ImageView greenArrow = (ImageView)findViewById(R.id.arrow_green_howtoplay);
-        final TextView HowToPlayInstructionCont = (TextView)findViewById(R.id.How_to_play_instruction_cont);
-        final TextView HowToPlayInstructionCorrect = (TextView)findViewById(R.id.How_to_play_instruction_correct);
         if(yAxis>0.25&&blueArrow.getVisibility()==View.VISIBLE){
             blueArrow.setVisibility(View.INVISIBLE);
             HowToPlayInstructionCont.setVisibility(View.INVISIBLE);
@@ -117,7 +115,6 @@ public class HowToPlayActivity extends AppCompatActivity implements SensorEventL
             yellowArrow.setVisibility(View.INVISIBLE);
         }
         if(blueArrow.getVisibility()==View.INVISIBLE&&redArrow.getVisibility()==View.INVISIBLE&&yellowArrow.getVisibility()==View.INVISIBLE&&greenArrow.getVisibility()==View.INVISIBLE){
-            TextView HowToPlayInstructionsComplete = (TextView)findViewById(R.id.How_to_play_instruction_complete);
             HowToPlayInstructionCorrect.setVisibility(View.INVISIBLE);
             HowToPlayInstructionsComplete.setVisibility(View.VISIBLE);
             instructionHandler.postDelayed(new Runnable() {
