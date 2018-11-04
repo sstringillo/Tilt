@@ -4,7 +4,7 @@
     android:versionCode="2"
     android:versionName="1.01">
     <uses-feature
-        android:name="android.hardware."
+        android:name="android.hardware.Sensor.TYPE_ACCELEROMETER"
         android:required="true">
     </uses-feature>
     <uses-feature
