@@ -97,7 +97,7 @@ public class HowToPlayActivity extends AppCompatActivity implements SensorEventL
 
     //Teachers user how to play game by showing arrows and TextViews with instructions on how to play
     private void instructionLoop(float xAxis, float yAxis){
-        if(yAxis>0.25&&blueArrow.getVisibility()==View.VISIBLE){
+        if(yAxis>0.30&&blueArrow.getVisibility()==View.VISIBLE){
             blueArrow.setVisibility(View.INVISIBLE);
             HowToPlayInstructionCont.setVisibility(View.INVISIBLE);
             HowToPlayInstructionCorrect.setVisibility(View.VISIBLE);
@@ -108,10 +108,10 @@ public class HowToPlayActivity extends AppCompatActivity implements SensorEventL
         if(yAxis<-0.25&&redArrow.getVisibility()==View.VISIBLE){
             redArrow.setVisibility(View.INVISIBLE);
         }
-        if(xAxis>0.20&&greenArrow.getVisibility()==View.VISIBLE){
+        if(xAxis>0.15&&greenArrow.getVisibility()==View.VISIBLE){
             greenArrow.setVisibility(View.INVISIBLE);
         }
-        if(xAxis<-0.20&&yellowArrow.getVisibility()==View.VISIBLE){
+        if(xAxis<-0.15&&yellowArrow.getVisibility()==View.VISIBLE){
             yellowArrow.setVisibility(View.INVISIBLE);
         }
         if(blueArrow.getVisibility()==View.INVISIBLE&&redArrow.getVisibility()==View.INVISIBLE&&yellowArrow.getVisibility()==View.INVISIBLE&&greenArrow.getVisibility()==View.INVISIBLE){

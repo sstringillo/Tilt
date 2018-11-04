@@ -142,7 +142,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     ScoreCount.setText(String.valueOf(count));
                     gameLoop();
                 }
-                else if(xAxis<-0.25||yAxis>0.35||yAxis<-0.35){
+                else if(xAxis<-0.35||yAxis>0.40||yAxis<-0.40){
                     gameBreak();
                 }
             }
@@ -155,12 +155,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     ScoreCount.setText(String.valueOf(count));
                     gameLoop();
                 }
-                else if(xAxis>0.25||yAxis>0.35||yAxis<-0.35){
+                else if(xAxis>0.35||yAxis>0.40||yAxis<-0.40){
                     gameBreak();
                 }
             }
             if (blueArrow.getVisibility() == View.VISIBLE) {
-                if(yAxis > 0.25) {
+                if(yAxis > 0.30) {
                     timeHandler.removeCallbacks(timer);
                     blueArrow.setVisibility(View.INVISIBLE);
                     count++;
@@ -168,12 +168,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     ScoreCount.setText(String.valueOf(count));
                     gameLoop();
                 }
-                else if(xAxis>0.35||xAxis<-0.35||yAxis<-0.25){
+                else if(xAxis>0.40||xAxis<-0.40||yAxis<-0.35){
                     gameBreak();
                 }
             }
             if (redArrow.getVisibility() == View.VISIBLE) {
-                if(yAxis < -0.20) {
+                if(yAxis < -0.25) {
                     timeHandler.removeCallbacks(timer);
                     redArrow.setVisibility(View.INVISIBLE);
                     count++;
@@ -181,7 +181,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     ScoreCount.setText(String.valueOf(count));
                     gameLoop();
                 }
-                else if(xAxis>0.35||xAxis<-0.35||yAxis>0.25){
+                else if(xAxis>0.40||xAxis<-0.40||yAxis>0.35){
                     gameBreak();
                 }
             }
